@@ -13,14 +13,18 @@ class Solution {
 public:
 	vector<vector<int>> subsets(vector<int>& nums) {
 		vector<vector<int>> subsets;
-		subsets.push_back(vector<int>());
-		for (int num : nums) {
-			for (vector<int> subset : subsets) {
-				subset.push_back(num);
-				subsets.push_back(subset);
-				subset.pop_back();
-			}
-		}
+		backtrack(subsets, nums, 0);
 		return subsets;
+	}
+
+private:
+	vector<int> permutations;
+	void backtrack(vector<vector<int>> &results, vector<int> &nums, int index) {
+		results.push_back(permutations);
+		for (int i = index; i < nums.size(); i++) {
+			permutations.push_back(nums[i]);
+			backtrack(results, nums, i + 1);
+			permutations.pop_back();
+		}
 	}
 };

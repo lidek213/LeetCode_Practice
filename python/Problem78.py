@@ -7,7 +7,13 @@ from typing import List
 
 class Solution:
   def subsets(self, nums: List[int]) -> List[List[int]]:
-    subsets: List[List[int]] = [[]]
-    for num in nums:
-      subsets += [subset + [num] for subset in subsets]
+    subsets: List[List[int]] = []
+    permutations: List[int] = []
+    def backtrack(index: int):
+      subsets.append(permutations[:])
+      for i in range(index, len(nums)):
+        permutations.append(nums[i])
+        backtrack(i + 1)
+        permutations.pop()
+    backtrack(0)
     return subsets
