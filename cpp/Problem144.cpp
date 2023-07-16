@@ -24,17 +24,23 @@ class Solution {
 public:
 	vector<int> preorderTraversal(TreeNode* root) {
 		vector<int> result;
-		preorder(root, result);
-		return result;
-	}
-private:
-	void preorder(TreeNode* node, vector<int>& result) {
-		if (node == nullptr) {
-			return;
+		TreeNode* head = root;
+		TreeNode* prev = nullptr;
+		while (head != nullptr) {
+			result.push_back(head->val);
+			if (head->left == nullptr) {
+				head = head->right;
+			} else {
+				prev = head->left;
+				while (prev->right != nullptr) {
+					prev = prev->right;
+				}
+				prev->right = head->right;
+				TreeNode* tmp = head;
+				head = head->left;
+				tmp->left = nullptr;
+			}
 		}
-
-		result.push_back(node->val);
-		preorder(node->left, result);
-		preorder(node->right, result);
+		return result;
 	}
 };
