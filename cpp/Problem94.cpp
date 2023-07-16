@@ -24,17 +24,23 @@ class Solution {
 public:
 	vector<int> inorderTraversal(TreeNode* root) {
 		vector<int> result;
-		inorder(root, result);
-		return result;
-	}
-private:
-	void inorder(TreeNode* node, vector<int>& result) {
-		if (node == nullptr) {
-			return;
+		TreeNode* head = root;
+		TreeNode* prev = nullptr;
+		while (head != nullptr) {
+			if (head->left == nullptr) {
+				result.push_back(head->val);
+				head = head->right;
+			} else {
+				prev = head->left;
+				while (prev->right != nullptr) {
+					prev = prev->right;
+				}
+				prev->right = head;
+				TreeNode* tmp = head;
+				head = head->left;
+				tmp->left = nullptr;
+			}
 		}
-
-		inorder(node->left, result);
-		result.push_back(node->val);
-		inorder(node->right, result);
+		return result;
 	}
 };

@@ -16,11 +16,18 @@ class TreeNode:
 class Solution:
   def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
     result: List[int] = []
-    def inorder(node: Optional[TreeNode]):
-      if not node:
-        return
-      inorder(node.left)
-      result.append(node.val)
-      inorder(node.right)
-    inorder(root)
+    head: Optional[TreeNode] = root
+    prev: Optional[TreeNode] = None
+    while head != None:
+      if head.left == None:
+        result.append(head.val)
+        head = head.right
+      else:
+        prev = head.left
+        while prev.right != None:
+          prev = prev.right
+        prev.right = head
+        tmp: Optional[TreeNode] = head
+        head = head.left
+        tmp.left = None
     return result
