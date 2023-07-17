@@ -3,6 +3,7 @@
 # Difficulty: Medium
 # Tags: Linked List
 
+from typing import List
 from typing import Optional
 
 # Definition for singly-linked list.
@@ -13,33 +14,23 @@ class ListNode:
 
 class Solution:
   def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
-    def reverseListNode(head: Optional[ListNode]):
-      newHead: Optional[ListNode] = None
-      tmp: Optional[ListNode] = None
-      while head != None:
-        tmp = head.next
-        head.next = newHead
-        newHead = head
-        head = tmp
-      return newHead
-    
-    l1 = reverseListNode(l1)
-    l2 = reverseListNode(l2)
-    dummy: Optional[ListNode] = ListNode()
-    prev: Optional[ListNode] = dummy
+    l1_val_stack: List[int] = []
+    l2_val_stack: List[int] = []
+    while l1 != None:
+      l1_val_stack.append(l1.val)
+      l1 = l1.next
+    while l2 != None:
+      l2_val_stack.append(l2.val)
+      l2 = l2.next
+    prev: Optional[ListNode] = None
     carry: int = 0
     sum: int = 0
-    while l1 != None or l2 != None or carry != 0:
+    while len(l1_val_stack) != 0 or len(l2_val_stack) != 0 or carry != 0:
       sum = carry
-      if l1 != None:
-        sum += l1.val
-        l1 = l1.next
-      if l2 != None:
-        sum += l2.val
-        l2 = l2.next
+      if len(l1_val_stack):
+        sum += l1_val_stack.pop()
+      if len(l2_val_stack):
+        sum += l2_val_stack.pop()
       carry = sum // 10
-      prev.next = ListNode(sum % 10)
-      prev = prev.next
-    prev = dummy.next
-    dummy.next = None
-    return reverseListNode(prev)
+      prev = ListNode(sum % 10, prev)
+    return prev
