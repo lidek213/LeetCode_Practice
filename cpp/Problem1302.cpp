@@ -22,23 +22,24 @@ struct TreeNode {
 class Solution {
 public:
 	int deepestLeavesSum(TreeNode* root) {
-		int maxDepth = 0;
-		int result = 0;
-		dfs(root, 0, maxDepth, result);
-		return result;
-	}
-
-	void dfs(TreeNode* root, int depth, int& maxDepth, int& result) {
-		if (root == nullptr) {
-			return;
+		vector<TreeNode*> nextLevel = {root};
+		vector<TreeNode*> currentLevel;
+		while (nextLevel.size() != 0) {
+			currentLevel = nextLevel;
+			nextLevel.clear();
+			for (TreeNode* node : currentLevel) {
+				if (node->left != nullptr) {
+					nextLevel.push_back(node->left);
+				}
+				if (node->right != nullptr) {
+					nextLevel.push_back(node->right);
+				}
+			}
 		}
-		dfs(root->left, depth + 1, maxDepth, result);
-		dfs(root->right, depth + 1, maxDepth, result);
-		if (depth > maxDepth) {
-			maxDepth = depth;
-			result = root->val;
-		} else if (depth == maxDepth) {
-			result += root->val;
+		int sum = 0;
+		for (TreeNode* node : currentLevel) {
+			sum += node->val;
 		}
+		return sum;
 	}
 };

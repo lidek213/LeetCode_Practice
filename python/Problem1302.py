@@ -15,18 +15,14 @@ class TreeNode:
 
 class Solution:
   def deepestLeavesSum(self, root: Optional[TreeNode]) -> int:
-    maxDepth: int = 0
-    result: int = 0
-    def dfs(node: Optional[TreeNode], depth: int):
-      if (node == None):
-        return
-      dfs(node.left, depth + 1)
-      dfs(node.right, depth + 1)
-      nonlocal maxDepth, result
-      if depth > maxDepth:
-        maxDepth = depth
-        result = 0
-      if depth == maxDepth:
-        result += node.val
-    dfs(root, 0)
-    return result
+    nextLevel: List[TreeNode] = [root]
+    currentLevel: List[TreeNode] = []
+    while len(nextLevel) != 0:
+      currentLevel = nextLevel
+      nextLevel = []
+      for node in currentLevel:
+        if node.left != None:
+          nextLevel.append(node.left)
+        if node.right != None:
+          nextLevel.append(node.right)
+    return sum([node.val for node in currentLevel])
